@@ -9,26 +9,25 @@ const Exhibit = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const [image, setImage] = useState(false);
   const params = useParams();
+
+  //const serverUrl = "http://nginx" // will ovveride this later wit
+  const serverUrl = 'http://localhost'; // will ovveride this later wit
+
   useEffect(() => {
-    fetch('/api/v1/page/' + params.exhibitId)
+    fetch(`${serverUrl}/api/v1/page/${params.exhibitId}`)
       .then((response) => {
-        if (!response.ok) {
-          setNotFound(true);
-        }
         return response.json();
       })
-      .then((actualData) => {
+      .then((json) => {
         setData({
-          code: actualData.code,
-          disc: actualData.disc
+          code: json.code,
+          disc: json.disc,
+          imageName: json.image_name
         });
-
-        import(`../../../src/public/uploads/panoramas/${actualData.image_name}`)
-          .then((img) => setImage(img.default))
-          .then(() => setLoading(false));
-      });
+      })
+      .then(() => setLoading(false))
+      .catch(() => setNotFound(true));
   }, []);
   if (notFound) return <NotFound />;
   return (
@@ -50,7 +49,7 @@ const Exhibit = () => {
           <Pannellum
             width="100vw"
             height="66vh"
-            image={image}
+            image={`${serverUrl}/uploads/panoramas/${data.imageName}`}
             autoLoad
             showControls={false}
             disableKeyboardCtrl
