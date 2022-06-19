@@ -5,14 +5,16 @@ import NotFound from './NotFound';
 import { Pannellum } from 'pannellum-react';
 import { Circles } from 'react-loader-spinner';
 
+/* eslint-disable */
+
 const Exhibit = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const params = useParams();
 
-  //const serverUrl = "http://nginx" // will ovveride this later wit
-  const serverUrl = 'http://localhost'; // will ovveride this later wit
+  //const serverUrl = "http://nginx"
+  const serverUrl = 'http://localhost';
 
   useEffect(() => {
     fetch(`${serverUrl}/api/v1/page/${params.exhibitId}`)
@@ -24,7 +26,9 @@ const Exhibit = () => {
           code: json.code,
           disc: json.disc,
           name: json.name,
-          imageName: json.image_name
+          imageName: json.image_name,
+          type: json.type,
+          audioName: json.audio_name
         });
       })
       .then(() => setLoading(false))
@@ -47,34 +51,31 @@ const Exhibit = () => {
         />
       ) : (
         <div>
-          <Pannellum
-            width="100vw"
-            height="66vh"
-            image={`${serverUrl}/uploads/panoramas/${data.imageName}`}
-            autoLoad
-            showControls={false}
-            disableKeyboardCtrl
-            orientationOnByDefault={true}
-          />
+          {data.type === 'regular' && (
+            <img
+              src={`${serverUrl}/uploads/panoramas/${data.imageName}`}
+              style={{width:"100vw", height: "66vh"}}
+            />
+          )}
+          {data.type === 'panorama' && (
+            <Pannellum
+              width="100vw"
+              height="66vh"
+              image={`${serverUrl}/uploads/panoramas/${data.imageName}`}
+              autoLoad
+              showControls={false}
+              disableKeyboardCtrl
+              orientationOnByDefault={true}
+            />
+          )}
+
           <div className="description-background">
-            <h1 className="margin-20">{data.name}</h1>
+            {data.audioName && 
+            <audio id="player" controls style={{width: "100%"}}>
+              <source src={`${serverUrl}/uploads/audio/${data.audioName}`} type="audio/mpeg"></source>
+            </audio>}
+            <h1 className="margin-10">{data.name}</h1>
             <div className="margin-10">{data.disc}</div>
-          </div>
-          <div style={{ position: 'absolute', bottom: '-5px' }}>
-            <svg
-              width={window.innerWidth}
-              viewBox="0 0 375 302"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M-74 343.863C-74 343.863 -74.0001 0 174 171.931C422 343.863 422 0 422 0L422 343.863L-74 343.863Z"
-                fill="#2AD2AA"
-              />
-              <path
-                d="M-74 381C-74 381 -74 37.1372 174 209.069C422 381 422 37.1372 422 37.1372L422 381L174 381L-74 381Z"
-                fill="#4EA095"
-              />
-            </svg>
           </div>
         </div>
       )}
