@@ -14,7 +14,7 @@ const Exhibit = () => {
   const params = useParams();
 
   //const serverUrl = "http://nginx"
-  const serverUrl = 'http://localhost';
+  const serverUrl = 'http://159.223.220.139';
 
   useEffect(() => {
     fetch(`${serverUrl}/api/v1/page/${params.exhibitId}`)
