@@ -74,10 +74,10 @@ const Exhibit = () => {
             <audio id="player" controls style={{width: "100%"}}>
               <source src={`${serverUrl}/uploads/audio/${data.audioName}`} type="audio/mpeg"></source>
             </audio>}
-            {data.audioName &&
+            {data.audioName == null &&
             <div className="spacer"></div>}
             <h1 className="margin-10">{data.name}</h1>
-            <div className="margin-10">{data.disc}</div>
+            <div className="margin-10" style={{fontSize: "initial"}}>{data.disc}</div>
           </div>
         </div>
       )}

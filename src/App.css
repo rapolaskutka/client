@@ -19,11 +19,12 @@ body {
 }
 
 .description-background {
-  background: #ffffff;
   border-radius: 50px;
   position: absolute;
   width: 100%;
   top: 60vh;
+  min-height: 174vh;
+  background: #ffffff url('../public/wave.svg') no-repeat fixed center;
 }
 
 .margin-10 {
