@@ -4,7 +4,7 @@ const Exhibit = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <div className="description-background">
-        <h1 className="margin-10">Eksponatas nerastas</h1>
+        <h1 className="margin-10 text-center">Eksponatas nerastas</h1>
       </div>
     </div>
   );
